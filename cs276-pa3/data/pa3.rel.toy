@@ -1,0 +1,22 @@
+query: career services mock interview
+  url: http://aims.stanford.edu/career_change.html 1.83
+  url: http://forum.stanford.edu/careers/recruiting.php 1.17
+  url: http://studentaffairs.stanford.edu/cdc/services/career-counseling 1.83
+  url: http://www.law.stanford.edu/organizations/offices/office-of-career-services/past-events?page=1 1.17
+  url: https://studentaffairs.stanford.edu/cdc/interviewing 2.17
+  url: https://studentaffairs.stanford.edu/cdc/interviewing/etiquette 1.83
+  url: https://studentaffairs.stanford.edu/cdc/interviewing/to-ask 1.83
+  url: https://studentaffairs.stanford.edu/cdc/interviewing/types 1.83
+  url: https://studentaffairs.stanford.edu/cdc/jobs/internships-finding 1.50
+  url: https://www.gsb.stanford.edu/programs/mba/career-impact/support 1.17
+query: climbing wall hours
+  url: http://outdoored.stanford.edu/climbing/ 2.67
+  url: http://outdoored.stanford.edu/climbing/team/ 0.83
+  url: http://outdoored.stanford.edu/crag/crag-sponsors/ 0.33
+  url: http://stanford.edu/group/alpineclub/08a1006anch.txt 0.50
+  url: http://www.stanford.edu/dept/pe/cgi-bin/cardinalrec/facilities/aoerc/ 1.33
+  url: http://www.stanford.edu/group/alpineclub/info/classes.html 1.00
+  url: http://www.stanford.edu/~clint/index/ 0.00
+  url: https://outdoored.stanford.edu/center/ 1.67
+  url: https://outdoored.stanford.edu/climbing/crag/schedule/ 1.50
+
