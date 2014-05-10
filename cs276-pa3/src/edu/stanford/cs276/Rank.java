@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Comparator;
 
+import edu.stanford.cs276.LoadHandler.*;
 import edu.stanford.cs276.util.Pair;
 
 public class Rank 
@@ -122,15 +123,25 @@ public class Rank
 		}
 	}
 
-	public static void main(String[] args) throws IOException 
+	public static void main(String[] args) throws Exception 
 	{
 
 		Map<String,Double> idfs = null;
+		String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/toy_example/data/";
+		String idfFile = "idfFile.txt";
 		
+		idfs = LoadHandler.buildDFs(dataDir, idfFile);
 		/*
 		 * @//TODO : Your code here to handle idfs
 		 */
 		
+		for (String term : idfs.keySet())
+		{
+			/*
+			 * @//TODO : Your code here
+			 */
+			System.out.println("term: "+term+"\tidf: "+idfs.get(term));
+		}
 		
 		if (args.length < 2) {
 			System.err.println("Insufficient number of arguments: <queryDocTrainData path> taskType");
@@ -162,6 +173,6 @@ public class Rank
 //		writeRankedResultsToFile(queryRankings,outputFilePath);
 		
 		//print results
-		printRankedResults(queryRankings);
+	//	printRankedResults(queryRankings);
 	}
 }

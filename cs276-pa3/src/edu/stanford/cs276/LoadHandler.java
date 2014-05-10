@@ -3,6 +3,7 @@ package edu.stanford.cs276;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -119,7 +120,7 @@ public class LoadHandler
 	}
 	
 	//builds and then serializes from file
-	public static Map<String,Double> buildDFs(String dataDir, String idfFile)
+	public static Map<String,Double> buildDFs(String dataDir, String idfFile) throws Exception
 	{
 		
 		/* Get root directory */
@@ -137,6 +138,42 @@ public class LoadHandler
 		//counts number of documents in which each term appears
 		Map<String,Double> termDocCount = new HashMap<String,Double>();
 		
+		
+		/* For each block */
+		for (File block : dirlist) {
+			
+			File blockDir = new File(root, block.getName());
+			File[] filelist = blockDir.listFiles();
+			
+			/* For each file */
+			for (File file : filelist) {
+				//System.out.println("\tFile: "+file.getName());
+				++totalDocCount;
+				Set<String> processed = new HashSet<String>();
+				
+				BufferedReader reader = new BufferedReader(new FileReader(file));
+				String line;
+				while ((line = reader.readLine()) != null) {
+					String[] tokens = line.trim().split("\\s+");
+					for (String token : tokens) {
+						if(!termDocCount.containsKey(token)) {
+							//System.out.println("new token: "+token);
+							termDocCount.put(token, (double)1);
+							processed.add(token);
+							}
+						else {
+							if(!processed.contains(token)) {
+								//System.out.println("already process token: "+token);
+								termDocCount.put(token, termDocCount.get(token) + 1);
+								processed.add(token);
+							}
+						 }
+					}
+				}
+				reader.close();
+			}
+		}
+		
 		/*
 		 * @//TODO : Your code here --consult pa1 (will be basically a simplified version)
 		 */
@@ -149,6 +186,7 @@ public class LoadHandler
 			/*
 			 * @//TODO : Your code here
 			 */
+			termDocCount.put(term, Math.log10(totalDocCount/termDocCount.get(term)));
 		}
 		
 		
