@@ -38,10 +38,12 @@ public class Rank
 		{
 			//loop through urls for query, getting scores
 			List<Pair<String,Double>> urlAndScores = new ArrayList<Pair<String,Double>>(queryDict.get(query).size());
+			//System.out.println("Query: "+query.toString());
 			for (String url : queryDict.get(query).keySet())
 			{
 				double score = scorer.getSimScore(queryDict.get(query).get(url), query);
 				urlAndScores.add(new Pair<String,Double>(url,score));
+			//	System.out.println("\turl: "+url+"\tscore: "+score);
 			}
 
 			//sort urls for query based on scores
@@ -49,17 +51,20 @@ public class Rank
 				@Override
 				public int compare(Pair<String, Double> o1, Pair<String, Double> o2) 
 				{
+					return o2.getSecond().compareTo(o1.getSecond());
 					/*
 					 * @//TODO : Your code here
 					 */
-					return -1;
 				}	
 			});
 			
+			//System.out.println("Query: "+query.toString());
 			//put completed rankings into map
 			List<String> curRankings = new ArrayList<String>();
-			for (Pair<String,Double> urlAndScore : urlAndScores)
+			for (Pair<String,Double> urlAndScore : urlAndScores) {
+			//	System.out.println("\turl: "+urlAndScore.getFirst()+"\tscore: "+urlAndScore.getSecond());
 				curRankings.add(urlAndScore.getFirst());
+			}
 			queryRankings.put(query, curRankings);
 		}
 		return queryRankings;
@@ -130,18 +135,22 @@ public class Rank
 		String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/toy_example/data/";
 		String idfFile = "idfFile.txt";
 		
-		idfs = LoadHandler.buildDFs(dataDir, idfFile);
+		idfs = LoadHandler.loadDFs(idfFile);
+		
+		if(idfs==null) {
+			idfs = LoadHandler.buildDFs(dataDir, idfFile);
+		}
 		/*
 		 * @//TODO : Your code here to handle idfs
 		 */
 		
-		for (String term : idfs.keySet())
-		{
-			/*
-			 * @//TODO : Your code here
-			 */
-			System.out.println("term: "+term+"\tidf: "+idfs.get(term));
-		}
+//		for (String term : idfs.keySet())
+//		{
+//			/*
+//			 * @//TODO : Your code here
+//			 */
+//			System.out.println("term: "+term+"\tidf: "+idfs.get(term));
+//		}
 		
 		if (args.length < 2) {
 			System.err.println("Insufficient number of arguments: <queryDocTrainData path> taskType");
@@ -173,6 +182,6 @@ public class Rank
 //		writeRankedResultsToFile(queryRankings,outputFilePath);
 		
 		//print results
-	//	printRankedResults(queryRankings);
+		//printRankedResults(queryRankings);
 	}
 }
