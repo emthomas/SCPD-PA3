@@ -1,4 +1,4 @@
-query: career services mock interview
+query: career services mock interview for career
   url: http://aims.stanford.edu/career_change.html
     title: aims
     header: career resources
@@ -139,7 +139,7 @@ query: career services mock interview
       stanford_anchor_count: 2
     anchor_text: personalized career plan
       stanford_anchor_count: 5
-query: climbing wall hours
+query: climbing wall hours for climbing wall 
   url: http://outdoored.stanford.edu/climbing/
     title: climbing wall outdoor education
     header: climbing wall
