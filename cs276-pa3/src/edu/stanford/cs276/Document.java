@@ -17,10 +17,40 @@ public class Document {
 		this.url=url;
 	}
 	
+	public int[] getLengths() {
+		//String[] TFTYPES = {"url","title","body","header","anchor"};
+		int[] TYPESLEN = {0,0,0,0,0};
+		
+		if(url!=null) {
+			TYPESLEN[0] = url.split("[,.\\s\\-:\\?/]").length;
+		}
+		
+		if(title!=null) {
+			TYPESLEN[1] = title.split("[w+,.\\s\\-:\\?/]").length;
+		}
+		
+		TYPESLEN[2] = body_length;
+		
+		if(headers!=null) {
+			for(String header : headers) {
+				TYPESLEN[3] += header.split("\\s+").length;
+			}
+		}
+		
+		if(anchors!=null) {
+			for(int count : anchors.values()) {
+				TYPESLEN[4] += count;
+			}
+		}
+		
+		return TYPESLEN;
+	}
+	
 	// For debug
 	public String toString() {
 		StringBuilder result = new StringBuilder();
 		String NEW_LINE = System.getProperty("line.separator");
+		if (url != null) result.append("url: " + url + NEW_LINE);
 		if (title != null) result.append("title: " + title + NEW_LINE);
 		if (headers != null) result.append("headers: " + headers.toString() + NEW_LINE);
 		if (body_hits != null) result.append("body_hits: " + body_hits.toString() + NEW_LINE);

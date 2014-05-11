@@ -51,6 +51,36 @@ public class BM25Scorer extends AScorer
     	avgLengths = new HashMap<String,Double>();
     	pagerankScores = new HashMap<Document,Double>();
     	
+    	//loop over the queries
+    	for(Query q : this.queryDict.keySet()) {
+    		//loop over the docs
+    		for(Document doc : this.queryDict.get(q).values()) {
+    			//get the length for each type
+				int[] typelen = doc.getLengths();
+				Map<String,Double> len = new HashMap<String,Double>();
+				for(int i=0; i<this.TFTYPES.length; i++) {
+					len.put(this.TFTYPES[i], (double)typelen[i]);
+				}
+				lengths.put(doc, len);
+			}
+    	}
+    	
+    	for(Document doc : lengths.keySet()) {
+    		System.out.println(doc);
+    		for(Map.Entry<String, Double> entry : lengths.get(doc).entrySet()) {
+    			System.out.println("\t"+entry.getKey()+": "+entry.getValue());
+    			String type = entry.getKey();
+    			double length = (double)entry.getValue();
+    			if(avgLengths.containsKey(type)) {
+    				avgLengths.put(type, avgLengths.get(type) + length);
+    			}
+    			else {
+    				avgLengths.put(type,length);
+    			}
+    		}
+    		System.out.println();
+    	}
+    	
 		/*
 		 * @//TODO : Your code here
 		 */
@@ -58,6 +88,7 @@ public class BM25Scorer extends AScorer
     	//normalize avgLengths
 		for (String tfType : this.TFTYPES)
 		{
+			avgLengths.put(tfType, avgLengths.get(tfType)/lengths.size());
 			/*
 			 * @//TODO : Your code here
 			 */
@@ -82,6 +113,13 @@ public class BM25Scorer extends AScorer
 	//do bm25 normalization
 	public void normalizeTFs(Map<String,Map<String, Double>> tfs,Document d, Query q)
 	{
+		//System.out.println("Doc: "+d.toString());
+		for(String field: tfs.keySet()) {
+			//System.out.println(field);
+			for(Map.Entry<String, Double> termtf : tfs.get(field).entrySet()) {
+				//System.out.println("\t"+termtf.getKey()+": "+termtf.getValue());
+			}
+		}
 		/*
 		 * @//TODO : Your code here
 		 */
