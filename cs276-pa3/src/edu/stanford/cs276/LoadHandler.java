@@ -34,8 +34,9 @@ public class LoadHandler
 		/* feature dictionary: Query -> (url -> Document)  */
 		Map<Query,Map<String, Document>> queryDict =  new HashMap<Query,Map<String, Document>>();
 		
-		while ((line = reader.readLine()) != null) 
+		while ((line = reader.readLine()) != null && !line.isEmpty()) 
 		{
+			//System.out.println("[DEBUG] line = "+line);
 			String[] tokens = line.split(":", 2);
 			String key = tokens[0].trim();
 			String value = tokens[1].trim();
