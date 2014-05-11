@@ -17,6 +17,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import edu.stanford.cs276.util.Pair;
+
+//import com.sun.tools.javac.util.Pair;
+
 public class LoadHandler 
 {
 	
@@ -101,27 +105,35 @@ public class LoadHandler
 	}
 	
 	//unserializes from file
-	public static Map<String,Double> loadDFs(String idfFile)
+	//public static Map<String,Double> loadDFs(String idfFile)
+	public static Pair<Map<String,Double>,Integer> loadDFs(String idfFile)
 	{
 		  Map<String,Double> termDocCount = null;
+		  int totalDocCount = 0;
+		  Pair<Map<String,Double>,Integer> idfPair = null;
+		  
 	      try
 	      {
 	         FileInputStream fis = new FileInputStream(idfFile);
 	         ObjectInputStream ois = new ObjectInputStream(fis);
 	         termDocCount = (HashMap<String,Double>) ois.readObject();
+	         totalDocCount = (Integer) ois.readObject();
 	         ois.close();
 	         fis.close();
+	         //System.out.println("totalDocCount="+totalDocCount);
+	         idfPair = new Pair<Map<String,Double>,Integer>(termDocCount, totalDocCount);
 	      }
 	      catch(Exception ioe)
 	      {
 	         ioe.printStackTrace();
 	         return null;
 	      }
-		return termDocCount;
+		return idfPair;
 	}
 	
 	//builds and then serializes from file
-	public static Map<String,Double> buildDFs(String dataDir, String idfFile) throws Exception
+	//public static Map<String,Double> buildDFs(String dataDir, String idfFile) throws Exception
+	public static Pair<Map<String, Double>, Integer> buildDFs(String dataDir, String idfFile) throws Exception
 	{
 		
 		/* Get root directory */
@@ -138,6 +150,7 @@ public class LoadHandler
 		
 		//counts number of documents in which each term appears
 		Map<String,Double> termDocCount = new HashMap<String,Double>();
+		Pair<Map<String, Double>, Integer> idfPair = null;
 		
 		
 		/* For each block */
@@ -197,6 +210,7 @@ public class LoadHandler
 			FileOutputStream fos = new FileOutputStream(idfFile);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(termDocCount);
+			oos.writeObject(totalDocCount);
 			oos.close();
 			fos.close();
         }
@@ -205,8 +219,10 @@ public class LoadHandler
         {
         	ioe.printStackTrace();
         }
+        
+        idfPair = new Pair<Map<String,Double>,Integer>(termDocCount, totalDocCount);
 		
-        return termDocCount;
+        return idfPair;
 	}
 
 }
