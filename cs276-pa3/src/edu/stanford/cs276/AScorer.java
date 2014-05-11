@@ -211,16 +211,20 @@ public abstract class AScorer
 			*/
 		}
 		
-		
-		
-		
 		//anchor
 		Map<String, Integer> anchors = d.anchors;
 		if(anchors!=null && anchors.size() > 0){
 			Map<String, Double> anchorsTf = new HashMap<String, Double>();
 			for(String anchor: anchors.keySet()){
 				anchor = anchor.toLowerCase();
-				int count = anchors.get(anchor);
+				//System.out.println("anchor: "+anchor);
+				int count = 0;
+				
+				try {
+				count = anchors.get(anchor);
+				} catch (Exception e){
+					//TODO	catch special characters
+				}
 				//System.out.println("anchor: "+anchor+"\tCount: "+count);
 				String[] aTokens = anchor.split("\\s+");
 				for(String aterm: aTokens){

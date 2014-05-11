@@ -132,8 +132,8 @@ public class Rank
 	{
 
 		Map<String,Double> idfs = null;
-		//String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/toy_example/data/";
-		String dataDir = "/Users/gupsumit/dev/Stanford/cs276/pa/pa3/SCPD-PA3/cs276-pa3/corpus/toy";
+		String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/toy_example/data/";
+		//String dataDir = "/Users/gupsumit/dev/Stanford/cs276/pa/pa3/SCPD-PA3/cs276-pa3/corpus/toy";
 		String idfFile = "idfFile.txt";
 		
 		if(idfs==null) {
