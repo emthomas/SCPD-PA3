@@ -11,12 +11,16 @@ public class Query
 	
 	public Query(String query)
 	{	
-		this.query = query;
-		queryWords = new ArrayList<String>(Arrays.asList(query.split(" ")));
+		this.query = query.toLowerCase();
+		queryWords = new ArrayList<String>(Arrays.asList(query.toLowerCase().split(" ")));
 	}
 	
 	public String toString() {
 		return query;
+	}
+	
+	public boolean termExists(String term){
+		return queryWords.contains(term);
 	}
 	
 	
