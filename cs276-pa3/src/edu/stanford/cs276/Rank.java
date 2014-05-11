@@ -132,25 +132,21 @@ public class Rank
 	{
 
 		Map<String,Double> idfs = null;
-		String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/toy_example/data/";
+		//String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/toy_example/data/";
+		String dataDir = "/Users/gupsumit/dev/Stanford/cs276/pa/pa3/SCPD-PA3/cs276-pa3/corpus/toy";
 		String idfFile = "idfFile.txt";
-		
-		idfs = LoadHandler.loadDFs(idfFile);
 		
 		if(idfs==null) {
 			idfs = LoadHandler.buildDFs(dataDir, idfFile);
 		}
-		/*
-		 * @//TODO : Your code here to handle idfs
-		 */
 		
-//		for (String term : idfs.keySet())
-//		{
-//			/*
-//			 * @//TODO : Your code here
-//			 */
-//			System.out.println("term: "+term+"\tidf: "+idfs.get(term));
-//		}
+		idfs = LoadHandler.loadDFs(idfFile);
+		
+		/*
+		for(String term: idfs.keySet()){
+			System.out.println("term: "+term+"\tidf: "+idfs.get(term));
+		}
+		*/
 		
 		if (args.length < 2) {
 			System.err.println("Insufficient number of arguments: <queryDocTrainData path> taskType");
@@ -173,6 +169,17 @@ public class Rank
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		/*
+		for(Query q: queryDict.keySet()){
+			System.out.println(q);
+			Map<String, Document> m = queryDict.get(q);
+			for(String url: m.keySet()){
+				Document d = m.get(url);
+				System.out.println(d);
+			}
+		}
+		*/
 		
 		//score documents for queries
 		Map<Query,List<String>> queryRankings = score(queryDict,scoreType,idfs);
