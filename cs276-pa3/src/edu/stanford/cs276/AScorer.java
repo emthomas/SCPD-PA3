@@ -13,11 +13,11 @@ import javax.print.DocFlavor.STRING;
 
 public abstract class AScorer 
 {
-	
+	int corpusCount = 0;
 	Map<String,Double> idfs;
 	String[] TFTYPES = {"url","title","body","header","anchor"};
 	
-	public AScorer(Map<String,Double> idfs)
+	public AScorer(Map<String,Double> idfs, int corpusCount)
 	{
 		this.idfs = idfs;
 	}
