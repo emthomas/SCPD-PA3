@@ -17,6 +17,11 @@ public abstract class AScorer
 	Map<String,Double> idfs;
 	String[] TFTYPES = {"url","title","body","header","anchor"};
 	
+	public AScorer(Map<String,Double> idfs)
+	{
+		this.idfs = idfs;
+	}
+	
 	public AScorer(Map<String,Double> idfs, int corpusCount)
 	{
 		this.idfs = idfs;

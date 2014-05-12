@@ -22,7 +22,7 @@ public class Rank
 		if (scoreType.equals("baseline"))
 			scorer = new BaselineScorer();
 		else if (scoreType.equals("cosine"))
-			scorer = new CosineSimilarityScorer(idfs);
+			scorer = new CosineSimilarityScorer(idfs, corpusCount);
 		else if (scoreType.equals("bm25")) {
 			scorer = new BM25Scorer(idfs,queryDict);
 			if(arguments.length>2) {
