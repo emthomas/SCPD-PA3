@@ -17,20 +17,29 @@ import java.util.Set;
 
 public class CosineSimilarityScorer extends AScorer
 {
-	public CosineSimilarityScorer(Map<String,Double> idfs, int corpusCount)
-	{
-		super(idfs, corpusCount);
-	}
+	private static final double BODY_LENGTH_SMOOTHING_FACTOR = 500;
 	
 	///////////////weights///////////////////////////
-    double urlweight = -1;
-    double titleweight  = -1;
-    double bodyweight = -1;
-    double headerweight = -1;
-    double anchorweight = -1;
+    double urlweight = 0.4;
+    double titleweight  = 05;
+    double bodyweight = 0.6;
+    double headerweight = 0.7;
+    double anchorweight = 0.9;
     
-    double smoothingBodyLength = -1;
+    double smoothingBodyLength = 500;
+    
+    Map<String,Double> fieldWeight = new HashMap<String, Double>();
     //////////////////////////////////////////
+    
+    public CosineSimilarityScorer(Map<String,Double> idfs, int corpusCount)
+	{
+		super(idfs, corpusCount);
+		fieldWeight.put(TFTYPES[0], urlweight);
+		fieldWeight.put(TFTYPES[1], titleweight);
+		fieldWeight.put(TFTYPES[2], bodyweight);
+		fieldWeight.put(TFTYPES[3], headerweight);
+		fieldWeight.put(TFTYPES[4], anchorweight);
+	}
     
     public double IDF(String term){
     	if(idfs.containsKey(term)){
@@ -46,21 +55,95 @@ public class CosineSimilarityScorer extends AScorer
     
 	public double getNetScore(Map<String,Map<String, Double>> tfs, Query q, Map<String,Double> tfQuery,Document d)
 	{
+		//System.out.println("Query: "+q.toString());
+		
 		double score = 0.0;
 		
-		/*
-		 * @//TODO : Your code here
-		 */
+		Map<String, Double> termScore = new HashMap<String, Double>();
+		for(String type: tfs.keySet()){
+			//System.out.println("<"+type+">");
+			Map<String, Double> m = tfs.get(type);
+			for(String term: m.keySet()){
+				double fieldScore = m.get(term);
+				//System.out.println("\t"+term);
+				//System.out.println("\t\tfs="+fieldScore);
+				if(termScore.containsKey(term)){
+					double s = termScore.get(term);
+					//System.out.println("\t\ts1="+s);
+					s = s + (fieldScore * fieldWeight.get(type));
+					//System.out.println("\t\ts2="+s);
+					termScore.put(term, s);
+				}else{
+					double s = fieldScore * fieldWeight.get(type);
+					//System.out.println("\t\ts0="+s);
+					termScore.put(term, s);
+				}
+			}
+		}
+		
+		//Dot product Q.D
+		for(String term: tfQuery.keySet()){
+			if(termScore.containsKey(term)){
+				double dScore = termScore.get(term);
+				double qScore = tfQuery.get(term);
+				score = score + (dScore*qScore);	
+			}
+		}
 		
 		return score;
 	}
 
+	private double sublinearScaling(double score){
+		if(score == 0.0){
+			return 1D;
+		}else{
+			return (1+Math.log10(score));
+		}
+	}
+	
+	private double normalizationFactor(Document d){
+		return d.body_length+smoothingBodyLength;
+	}
 	
 	public void normalizeTFs(Map<String,Map<String, Double>> tfs,Document d, Query q)
 	{
+		//Normalization will be done only with Document Vector and not for Query Vector
+		double nf = normalizationFactor(d);
+		
+		//System.out.println();
+		//System.out.println("Query: "+q.toString());
+		//Map<String,Double> termScore = new HashMap<String,Double>();
+		
+		for(String type: tfs.keySet()){
+			//System.out.println();
+			//System.out.println("<"+type+">");
+			Map<String, Double> m = tfs.get(type);
+			//termScore.putAll(m);
+			for(String term: m.keySet()){
+				double score = m.get(term);
+				//System.out.println("\t"+term);
+				//System.out.println("\t\t"+score);
+				score = sublinearScaling(score);
+				//System.out.println("\t\t"+score);
+				score /=nf;
+				//System.out.println("\t\t"+score);
+				m.put(term, score);
+			}
+			tfs.put(type, m);
+		}
 		/*
-		 * @//TODO : Your code here
-		 */
+		System.out.println("-----------------------");
+		for(String type: tfs.keySet()){
+			System.out.println("<"+type+">");
+			Map<String, Double> m = tfs.get(type);
+			for(String term: m.keySet()){
+				double score = m.get(term);
+				System.out.println("\t"+term+" : \t"+score);
+			}
+		}
+		System.out.println("-----------------------");
+		*/
+		
 	}
 
 	
@@ -70,6 +153,7 @@ public class CosineSimilarityScorer extends AScorer
 		
 		Map<String,Map<String, Double>> tfs = this.getDocTermFreqs(d,q);
 		
+		//Normalization for document frequencies
 		this.normalizeTFs(tfs, d, q);
 		
 		Map<String,Double> tfQuery = getQueryFreqs(q);
