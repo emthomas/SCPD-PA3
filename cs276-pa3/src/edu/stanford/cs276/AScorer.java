@@ -190,12 +190,14 @@ public abstract class AScorer
 					String[] hterms = h.split("\\s+");
 					for(String hterm: hterms){
 						//System.out.println("hterm: "+hterm);
-						if(headerTf.containsKey(hterm)){
-							Double score = headerTf.get(hterm);
-							score++;
-							headerTf.put(hterm, score);
-						}else{
-							headerTf.put(hterm,1D);
+						if(hterm != null && !hterm.isEmpty() && q.termExists(hterm)){	
+							if(headerTf.containsKey(hterm)){
+								Double score = headerTf.get(hterm);
+								score++;
+								headerTf.put(hterm, score);
+							}else{
+								headerTf.put(hterm,1D);
+							}
 						}
 					}
 				}
