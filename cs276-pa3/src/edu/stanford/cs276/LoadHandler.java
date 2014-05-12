@@ -192,7 +192,7 @@ public class LoadHandler
 		 * @//TODO : Your code here --consult pa1 (will be basically a simplified version)
 		 */
 		
-		System.out.println(totalDocCount);
+		 //TODO uncomment System.out.println(totalDocCount);
 		
 		//make idf
 		for (String term : termDocCount.keySet())

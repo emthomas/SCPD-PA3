@@ -13,7 +13,8 @@ import edu.stanford.cs276.util.Pair;
 
 public class Rank 
 {
-
+	public static String[] arguments = null;
+	
 	private static Map<Query,List<String>> score(Map<Query,Map<String, Document>> queryDict, String scoreType,
 			Map<String,Double> idfs, int corpusCount)
 	{
@@ -22,8 +23,12 @@ public class Rank
 			scorer = new BaselineScorer();
 		else if (scoreType.equals("cosine"))
 			scorer = new CosineSimilarityScorer(idfs, corpusCount);
-		else if (scoreType.equals("bm25"))
+		else if (scoreType.equals("bm25")) {
 			scorer = new BM25Scorer(idfs,queryDict);
+			if(arguments.length>2) {
+				((BM25Scorer) scorer).setParameters(arguments);
+			}
+		}
 		else if (scoreType.equals("window"))
 			//feel free to change this to match your cosine scorer if you choose to build on top of that instead
 			scorer = new SmallestWindowScorer(idfs,queryDict);
@@ -110,13 +115,13 @@ public class Rank
 				}
 				
 				String queryStr = "query: " + queryBuilder.toString() + "\n";
-		        System.out.print(queryStr);
+		        //TODO uncomment System.out.print(queryStr);
 				bw.write(queryStr);
 				
 		        for (String res : queryRankings.get(query))
 		        {
 		        	String urlString = "  url: " + res + "\n";
-		        	System.out.print(urlString);
+		        	 //TODO uncomment 	System.out.print(urlString);
 		        	bw.write(urlString);
 		        }
 			}	
@@ -131,12 +136,14 @@ public class Rank
 	public static void main(String[] args) throws Exception 
 	{
 
+		arguments = args;
 		Pair<Map<String,Double>,Integer> idfPair = null;
 		Map<String,Double> idfs = null;
 
 		int corpusCount = 0;
-		//String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/toy_example/data/";
-		String dataDir = "/Users/gupsumit/dev/Stanford/cs276/pa/pa3/SCPD-PA3/cs276-pa3/corpus/toy";
+		String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/data/";
+		//String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/toy_example/data";
+		//String dataDir = "/Users/gupsumit/dev/Stanford/cs276/pa/pa3/SCPD-PA3/cs276-pa3/corpus/toy";
 
 		String idfFile = "idfFile.txt";
 		
@@ -189,13 +196,13 @@ public class Rank
 			}
 		}
 		*/
-		
+
 		//score documents for queries
 		Map<Query,List<String>> queryRankings = score(queryDict,scoreType,idfs, corpusCount);
 		
 		//print results and save them to file 
-//		String outputFilePath =  null;
-//		writeRankedResultsToFile(queryRankings,outputFilePath);
+		String outputFilePath =  "/Users/ethomas35/SCPD/PA3/SCPD-PA3/cs276-pa3/src/edu/stanford/cs276/ranked.txt";
+		writeRankedResultsToFile(queryRankings,outputFilePath);
 		
 		//print results
 		//printRankedResults(queryRankings);

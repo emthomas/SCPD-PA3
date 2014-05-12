@@ -158,7 +158,6 @@ public class CosineSimilarityScorer extends AScorer
 		
 		Map<String,Double> tfQuery = getQueryFreqs(q);
 		
-		
         return getNetScore(tfs,q,tfQuery,d);
 	}
 
