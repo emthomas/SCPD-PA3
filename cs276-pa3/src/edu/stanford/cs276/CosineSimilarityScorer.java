@@ -17,9 +17,9 @@ import java.util.Set;
 
 public class CosineSimilarityScorer extends AScorer
 {
-	public CosineSimilarityScorer(Map<String,Double> idfs)
+	public CosineSimilarityScorer(Map<String,Double> idfs, int corpusCount)
 	{
-		super(idfs);
+		super(idfs, corpusCount);
 	}
 	
 	///////////////weights///////////////////////////
@@ -31,7 +31,19 @@ public class CosineSimilarityScorer extends AScorer
     
     double smoothingBodyLength = -1;
     //////////////////////////////////////////
+    
+    public double IDF(String term){
+    	if(idfs.containsKey(term)){
+    		return idfs.get(term);
+    	}else{
+    		return laplaceSmoothing();
+    	}
+    }
 	
+    private double laplaceSmoothing(){
+    	return Math.log10((corpusCount+1));
+    }
+    
 	public double getNetScore(Map<String,Map<String, Double>> tfs, Query q, Map<String,Double> tfQuery,Document d)
 	{
 		double score = 0.0;

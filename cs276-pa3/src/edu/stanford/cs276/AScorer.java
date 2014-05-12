@@ -13,11 +13,11 @@ import javax.print.DocFlavor.STRING;
 
 public abstract class AScorer 
 {
-	
+	int corpusCount = 0;
 	Map<String,Double> idfs;
 	String[] TFTYPES = {"url","title","body","header","anchor"};
 	
-	public AScorer(Map<String,Double> idfs)
+	public AScorer(Map<String,Double> idfs, int corpusCount)
 	{
 		this.idfs = idfs;
 	}
@@ -190,12 +190,14 @@ public abstract class AScorer
 					String[] hterms = h.split("\\s+");
 					for(String hterm: hterms){
 						//System.out.println("hterm: "+hterm);
-						if(headerTf.containsKey(hterm)){
-							Double score = headerTf.get(hterm);
-							score++;
-							headerTf.put(hterm, score);
-						}else{
-							headerTf.put(hterm,1D);
+						if(hterm != null && !hterm.isEmpty() && q.termExists(hterm)){	
+							if(headerTf.containsKey(hterm)){
+								Double score = headerTf.get(hterm);
+								score++;
+								headerTf.put(hterm, score);
+							}else{
+								headerTf.put(hterm,1D);
+							}
 						}
 					}
 				}

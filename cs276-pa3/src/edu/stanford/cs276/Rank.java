@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Comparator;
 
-import edu.stanford.cs276.LoadHandler.*;
+//import edu.stanford.cs276.LoadHandler.*;
 import edu.stanford.cs276.util.Pair;
 
 public class Rank 
@@ -16,7 +16,7 @@ public class Rank
 	public static String[] arguments = null;
 	
 	private static Map<Query,List<String>> score(Map<Query,Map<String, Document>> queryDict, String scoreType,
-			Map<String,Double> idfs)
+			Map<String,Double> idfs, int corpusCount)
 	{
 		AScorer scorer = null;
 		if (scoreType.equals("baseline"))
@@ -135,18 +135,28 @@ public class Rank
 
 	public static void main(String[] args) throws Exception 
 	{
+
 		arguments = args;
+		Pair<Map<String,Double>,Integer> idfPair = null;
 		Map<String,Double> idfs = null;
+
+		int corpusCount = 0;
 		String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/data/";
 		//String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/toy_example/data";
 		//String dataDir = "/Users/gupsumit/dev/Stanford/cs276/pa/pa3/SCPD-PA3/cs276-pa3/corpus/toy";
+
 		String idfFile = "idfFile.txt";
 		
 		if(idfs==null) {
-			idfs = LoadHandler.buildDFs(dataDir, idfFile);
+			
+			//idfs = LoadHandler.buildDFs(dataDir, idfFile);
+			idfPair = LoadHandler.buildDFs(dataDir, idfFile);
 		}
 		
-		idfs = LoadHandler.loadDFs(idfFile);
+		//idfs = LoadHandler.loadDFs(idfFile);
+		idfPair = LoadHandler.loadDFs(idfFile);
+		idfs = idfPair.getFirst();
+		corpusCount = idfPair.getSecond();
 		
 		/*
 		for(String term: idfs.keySet()){
@@ -188,7 +198,7 @@ public class Rank
 		*/
 
 		//score documents for queries
-		Map<Query,List<String>> queryRankings = score(queryDict,scoreType,idfs);
+		Map<Query,List<String>> queryRankings = score(queryDict,scoreType,idfs, corpusCount);
 		
 		//print results and save them to file 
 		String outputFilePath =  "/Users/ethomas35/SCPD/PA3/SCPD-PA3/cs276-pa3/src/edu/stanford/cs276/ranked.txt";
