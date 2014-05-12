@@ -2,9 +2,5 @@ bin/
 .project
 .classpath
 .settings/
-./cs276-pa3/src/edu/stanford/cs276/ranked.txt
-./cs276-pa3/idfFile.txt
-
 cs276-pa3/idfFile.txt
-
 cs276-pa3/src/edu/stanford/cs276/ranked.txt
