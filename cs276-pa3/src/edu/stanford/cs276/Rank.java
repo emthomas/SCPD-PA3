@@ -25,7 +25,8 @@ public class Rank
 			scorer = new CosineSimilarityScorer(idfs, corpusCount);
 		else if (scoreType.equals("bm25")) {
 			scorer = new BM25Scorer(idfs,queryDict);
-			if(arguments.length>2) {
+			//added for testing
+			if(arguments.length==15) {
 				((BM25Scorer) scorer).setParameters(arguments);
 			}
 		}
@@ -141,14 +142,15 @@ public class Rank
 		Map<String,Double> idfs = null;
 
 		int corpusCount = 0;
+		//String dataDir = args[15];
 		String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/data/";
 		//String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/toy_example/data";
 		//String dataDir = "/Users/gupsumit/dev/Stanford/cs276/pa/pa3/SCPD-PA3/cs276-pa3/corpus/toy";
 
 		String idfFile = "idfFile.txt";
 		
-		if(idfs==null) {
-			
+		//if(idfs==null)
+		{	
 			//idfs = LoadHandler.buildDFs(dataDir, idfFile);
 			idfPair = LoadHandler.buildDFs(dataDir, idfFile);
 		}

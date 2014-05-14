@@ -2,7 +2,9 @@ package edu.stanford.cs276;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Query
 {
@@ -23,5 +25,13 @@ public class Query
 		return queryWords.contains(term);
 	}
 	
-	
+	public int getUniqueTermsCount() {
+		Set<String> terms = new HashSet<String>();
+		if(query==null)
+			return 0;
+		for(String term : queryWords) {
+			terms.add(term);
+		}
+		return terms.size();
+	}
 }
