@@ -55,8 +55,7 @@ public class CosineSimilarityScorer extends AScorer
     
 	public double getNetScore(Map<String,Map<String, Double>> tfs, Query q, Map<String,Double> tfQuery,Document d)
 	{
-		//System.out.println("Query: "+q.toString());
-		
+		//System.out.println("Query: "+q.toString());		
 		double score = 0.0;
 		
 		Map<String, Double> termScore = new HashMap<String, Double>();
@@ -85,7 +84,8 @@ public class CosineSimilarityScorer extends AScorer
 		for(String term: tfQuery.keySet()){
 			if(termScore.containsKey(term)){
 				double dScore = termScore.get(term);
-				double qTF = tfQuery.get(term);
+				double qTF = sublinearScaling(tfQuery.get(term));
+				//double qTF = tfQuery.get(term);
 				double qTfIDf = qTF * IDF(term);
 				score = score + (dScore*qTfIDf);	
 			}
@@ -96,7 +96,7 @@ public class CosineSimilarityScorer extends AScorer
 
 	private double sublinearScaling(double score){
 		if(score == 0.0){
-			return 1D;
+			return 0.0;
 		}else{
 			return (1+Math.log10(score));
 		}

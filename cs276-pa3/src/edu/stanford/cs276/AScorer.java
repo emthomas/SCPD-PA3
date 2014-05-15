@@ -26,7 +26,7 @@ public abstract class AScorer
 	public AScorer(Map<String,Double> idfs, int corpusCount)
 	{
 		this.idfs = idfs;
-		corpusCount = corpusCount;
+		this.corpusCount = corpusCount;
 	}
 	
 	//scores each document for each query
@@ -77,6 +77,7 @@ public abstract class AScorer
 	////////////////////Initialization/Parsing Methods/////////////////////
 		
 	public Map<String, Double> getTFUrl(Document d, Query q){
+				
 		Set<String> ignore = new HashSet<String>();
 		ignore.add("http");
 		ignore.add("https");
@@ -87,6 +88,7 @@ public abstract class AScorer
 			stemmer = Rank.getStemmer();
 		}
 		
+		double defaultScore = 1D;
 		String url = d.url;
 		Map<String, Double> urlTf = new HashMap<String, Double>();
 		//System.out.println();
@@ -104,7 +106,7 @@ public abstract class AScorer
 					score++;
 					urlTf.put(ut, score);
 				}else{
-					urlTf.put(ut, 1D);
+					urlTf.put(ut, defaultScore);
 				}
 			}
 		}

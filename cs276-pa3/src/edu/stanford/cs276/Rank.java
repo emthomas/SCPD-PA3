@@ -64,7 +64,7 @@ public class Rank
 			{
 				double score = scorer.getSimScore(queryDict.get(query).get(url), query);
 				urlAndScores.add(new Pair<String,Double>(url,score));
-			//	System.out.println("\turl: "+url+"\tscore: "+score);
+				//System.out.println("\turl: "+url+"\tscore: "+score);
 			}
 
 			//sort urls for query based on scores
@@ -159,12 +159,13 @@ public class Rank
 		int corpusCount = 0;
 		//String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/data/";
 		//String dataDir = args[15];
-		String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/data/";
+		//String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/data/";
 		//String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/toy_example/data";
-		//String dataDir = "/Users/gupsumit/dev/Stanford/cs276/pa/pa3/SCPD-PA3/cs276-pa3/corpus/data/";
-		//String dataDir = "/Users/gupsumit/dev/Stanford/cs276/pa/pa3/SCPD-PA3/cs276-pa3/corpus/toy/";
+		
+		String dataDir = "./corpus/data/";
+		//String dataDir = "./corpus/toy/";
 
-		String idfFilePath = "/Users/gupsumit/dev/Stanford/cs276/pa/pa3/SCPD-PA3/cs276-pa3/";
+		String idfFilePath = ".";
 		String idfFileName = "idfFile.txt";
 		
 		File idfFile = new File(idfFilePath+"/"+idfFileName);
