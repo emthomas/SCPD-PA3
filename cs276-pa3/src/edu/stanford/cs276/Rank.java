@@ -13,8 +13,23 @@ import edu.stanford.cs276.util.Pair;
 
 public class Rank 
 {
+	public static final boolean enableStemmer = false;
 	public static String[] arguments = null;
+	private static Stemmer stemmer = null;
 	
+	public static boolean stemmingEnabled(){
+		return enableStemmer;
+	}
+	public static Stemmer getStemmer(){
+		if(stemmingEnabled()){
+			if(stemmer == null){
+				stemmer = new Stemmer();
+			}
+			return stemmer;
+		}
+		
+		return null;
+	}
 	private static Map<Query,List<String>> score(Map<Query,Map<String, Document>> queryDict, String scoreType,
 			Map<String,Double> idfs, int corpusCount)
 	{
@@ -141,22 +156,37 @@ public class Rank
 		Map<String,Double> idfs = null;
 
 		int corpusCount = 0;
-		String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/data/";
+		//String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/data/";
 		//String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/toy_example/data";
-		//String dataDir = "/Users/gupsumit/dev/Stanford/cs276/pa/pa3/SCPD-PA3/cs276-pa3/corpus/toy";
+		String dataDir = "/Users/gupsumit/dev/Stanford/cs276/pa/pa3/SCPD-PA3/cs276-pa3/corpus/data/";
+		//String dataDir = "/Users/gupsumit/dev/Stanford/cs276/pa/pa3/SCPD-PA3/cs276-pa3/corpus/toy/";
 
-		String idfFile = "idfFile.txt";
+		String idfFilePath = "/Users/gupsumit/dev/Stanford/cs276/pa/pa3/SCPD-PA3/cs276-pa3/";
+		String idfFileName = "idfFile.txt";
+		
+		File idfFile = new File(idfFilePath+"/"+idfFileName);
 		
 		if(idfs==null) {
 			
 			//idfs = LoadHandler.buildDFs(dataDir, idfFile);
-			idfPair = LoadHandler.buildDFs(dataDir, idfFile);
+			//idfPair = LoadHandler.buildDFs(dataDir, idfFile);
+			
+			if(idfFile.exists() && idfFile.length() != 0){
+				//System.out.println("IDF File ["+idfFile.toString()+"] Exists!! Loading the existing file");
+				idfPair = LoadHandler.loadDFs(idfFileName);
+			}else{
+				//System.out.println("IDF File ["+idfFile.toString()+"] DOES NOT Exists!! Building the file");
+				idfPair = LoadHandler.buildDFs(dataDir, idfFileName);
+			}
+			
+			idfs = idfPair.getFirst();
+			corpusCount = idfPair.getSecond();
 		}
 		
 		//idfs = LoadHandler.loadDFs(idfFile);
-		idfPair = LoadHandler.loadDFs(idfFile);
-		idfs = idfPair.getFirst();
-		corpusCount = idfPair.getSecond();
+		//idfPair = LoadHandler.loadDFs(idfFile);
+		//idfs = idfPair.getFirst();
+		//corpusCount = idfPair.getSecond();
 		
 		/*
 		for(String term: idfs.keySet()){
@@ -201,7 +231,8 @@ public class Rank
 		Map<Query,List<String>> queryRankings = score(queryDict,scoreType,idfs, corpusCount);
 		
 		//print results and save them to file 
-		String outputFilePath =  "/Users/ethomas35/SCPD/PA3/SCPD-PA3/cs276-pa3/src/edu/stanford/cs276/ranked.txt";
+		//String outputFilePath =  "/Users/ethomas35/SCPD/PA3/SCPD-PA3/cs276-pa3/src/edu/stanford/cs276/ranked.txt";
+		String outputFilePath = "/Users/gupsumit/dev/Stanford/cs276/pa/pa3/SCPD-PA3/cs276-pa3/src/edu/stanford/cs276/ranked.txt";
 		writeRankedResultsToFile(queryRankings,outputFilePath);
 		
 		//print results

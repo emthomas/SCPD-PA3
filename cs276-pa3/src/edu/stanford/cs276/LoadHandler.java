@@ -144,6 +144,7 @@ public class LoadHandler
 			return null;
 		}
 		
+		Stemmer stemmer = Rank.getStemmer();
 		File[] dirlist = rootdir.listFiles();
 
 		int totalDocCount = 0;
@@ -170,18 +171,33 @@ public class LoadHandler
 				while ((line = reader.readLine()) != null) {
 					String[] tokens = line.trim().split("\\s+");
 					for (String token : tokens) {
+						
 						if(!termDocCount.containsKey(token)) {
 							//System.out.println("new token: "+token);
 							termDocCount.put(token, (double)1);
 							processed.add(token);
-							}
-						else {
+						}else{
 							if(!processed.contains(token)) {
 								//System.out.println("already process token: "+token);
 								termDocCount.put(token, termDocCount.get(token) + 1);
 								processed.add(token);
 							}
-						 }
+						}
+						//If Stmmer is enabled add stemmed root word
+						if(Rank.stemmingEnabled()){
+							token = stemmer.stemThisWord(token);
+							if(!termDocCount.containsKey(token)) {
+								//System.out.println("new token: "+token);
+								termDocCount.put(token, (double)1);
+								processed.add(token);
+							}else{
+								if(!processed.contains(token)) {
+									//System.out.println("already process token: "+token);
+									termDocCount.put(token, termDocCount.get(token) + 1);
+									processed.add(token);
+								}
+							}
+						}
 					}
 				}
 				reader.close();

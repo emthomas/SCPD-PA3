@@ -20,13 +20,13 @@ public class CosineSimilarityScorer extends AScorer
 	private static final double BODY_LENGTH_SMOOTHING_FACTOR = 500;
 	
 	///////////////weights///////////////////////////
-    double urlweight = 0.4;
-    double titleweight  = 05;
-    double bodyweight = 0.6;
-    double headerweight = 0.7;
-    double anchorweight = 0.9;
+    double urlweight = 0.7;
+    double titleweight  = 0.9;
+    double bodyweight = 0.3;
+    double headerweight = 0.5;
+    double anchorweight = 0.8;
     
-    double smoothingBodyLength = 500;
+    double smoothingBodyLength = 1000;
     
     Map<String,Double> fieldWeight = new HashMap<String, Double>();
     //////////////////////////////////////////
@@ -85,8 +85,9 @@ public class CosineSimilarityScorer extends AScorer
 		for(String term: tfQuery.keySet()){
 			if(termScore.containsKey(term)){
 				double dScore = termScore.get(term);
-				double qScore = tfQuery.get(term);
-				score = score + (dScore*qScore);	
+				double qTF = tfQuery.get(term);
+				double qTfIDf = qTF * IDF(term);
+				score = score + (dScore*qTfIDf);	
 			}
 		}
 		

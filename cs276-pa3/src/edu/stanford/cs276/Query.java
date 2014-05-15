@@ -2,25 +2,56 @@ package edu.stanford.cs276;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Query
 {
 	String query;
 	List<String> queryWords;
+	Set<String> stemmedWord = new HashSet<String>();
+	Stemmer stemmer;
 	
 	public Query(String query)
 	{	
 		this.query = query.toLowerCase();
-		queryWords = new ArrayList<String>(Arrays.asList(query.toLowerCase().split(" ")));
+		String[] queryTokens = query.toLowerCase().split(" ");
+		queryWords = new ArrayList<String>(Arrays.asList(queryTokens));
+		//queryWords = new ArrayList<String>(Arrays.asList(query.toLowerCase().split(" ")));
+		if(Rank.stemmingEnabled()){
+			this.stemmer = Rank.getStemmer();
+			for(String token: queryTokens){
+				token = stemmer.stemThisWord(token);
+				stemmedWord.add(token);
+			}
+		}
+		
+		
+	}
+	
+	public Query(String query, Stemmer stemmer){
+		this.stemmer = Rank.getStemmer();
+		String[] queryTokens = query.toLowerCase().split(" ");
+		queryWords = new ArrayList<String>(Arrays.asList(queryTokens));
+		for(String token: queryTokens){
+			token = stemmer.stemThisWord(token);
+			stemmedWord.add(token);
+		}
+		
 	}
 	
 	public String toString() {
 		return query;
 	}
 	
-	public boolean termExists(String term){
-		return queryWords.contains(term);
+	public boolean termExists(String term, boolean checkStemmedWords){
+		if(checkStemmedWords){
+			String stemmedTerm = stemmer.stemThisWord(term);
+			return (queryWords.contains(term) | stemmedWord.contains(stemmedTerm));
+		}else{
+			return queryWords.contains(term);
+		}
 	}
 	
 	
