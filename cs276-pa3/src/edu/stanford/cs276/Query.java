@@ -54,5 +54,13 @@ public class Query
 		}
 	}
 	
-	
+	public int getUniqueTermsCount() {
+		Set<String> terms = new HashSet<String>();
+		if(query==null)
+			return 0;
+		for(String term : queryWords) {
+			terms.add(term);
+		}
+		return terms.size();
+	}
 }
