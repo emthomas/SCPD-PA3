@@ -5,4 +5,4 @@ bin/
 cs276-pa3/idfFile.txt
 cs276-pa3/src/edu/stanford/cs276/ranked.txt
 
-cs276-pa3/src/edu/stanford/cs276/test/TestBM25.java
+cs276-pa3/ranked.txt
