@@ -45,9 +45,13 @@ public class Rank
 				((BM25Scorer) scorer).setParameters(arguments);
 			}
 		}
-		else if (scoreType.equals("window"))
+		else if (scoreType.equals("window")) {
 			//feel free to change this to match your cosine scorer if you choose to build on top of that instead
 			scorer = new SmallestWindowScorer(idfs,queryDict);
+		if(arguments.length==15) {
+			((BM25Scorer) scorer).setParameters(arguments);
+		}
+	}
 		else if (scoreType.equals("extra"))
 			scorer = new ExtraCreditScorer(idfs);
 		
