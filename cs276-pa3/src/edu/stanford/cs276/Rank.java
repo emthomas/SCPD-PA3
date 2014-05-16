@@ -34,26 +34,25 @@ public class Rank
 			Map<String,Double> idfs, int corpusCount)
 	{
 		AScorer scorer = null;
-		if (scoreType.equals("baseline"))
+		if (scoreType.equals("baseline")){
 			scorer = new BaselineScorer();
-		else if (scoreType.equals("cosine"))
+		}else if (scoreType.equals("cosine")){
 			scorer = new CosineSimilarityScorer(idfs, corpusCount);
-		else if (scoreType.equals("bm25")) {
+		}else if (scoreType.equals("bm25")) {
 			scorer = new BM25Scorer(idfs,queryDict);
 			//added for testing
 			if(arguments.length==15) {
 				((BM25Scorer) scorer).setParameters(arguments);
 			}
-		}
-		else if (scoreType.equals("window")) {
+		}else if (scoreType.equals("window")) {
 			//feel free to change this to match your cosine scorer if you choose to build on top of that instead
 			scorer = new SmallestWindowScorer(idfs,queryDict);
-		if(arguments.length==15) {
-			((BM25Scorer) scorer).setParameters(arguments);
+			if(arguments.length==15) {
+				((BM25Scorer) scorer).setParameters(arguments);
+			}
+		}else if (scoreType.equals("extra")){
+			scorer = new ExtraCreditScorer(idfs, corpusCount);
 		}
-	}
-		else if (scoreType.equals("extra"))
-			scorer = new ExtraCreditScorer(idfs);
 		
 		
 		//put completed rankings here

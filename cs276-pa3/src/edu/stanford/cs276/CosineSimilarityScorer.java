@@ -17,14 +17,14 @@ import java.util.Set;
 
 public class CosineSimilarityScorer extends AScorer
 {
-	private static final double BODY_LENGTH_SMOOTHING_FACTOR = 500;
+	//private static final double BODY_LENGTH_SMOOTHING_FACTOR = 500;
 	
 	///////////////weights///////////////////////////
-    double urlweight = 0.7;
-    double titleweight  = 0.9;
+    double urlweight = 0.1;
+    double titleweight  = 0.3;
     double bodyweight = 0.3;
-    double headerweight = 0.5;
-    double anchorweight = 0.8;
+    double headerweight = 0.1;
+    double anchorweight = 0.9;
     
     double smoothingBodyLength = 1000;
     
