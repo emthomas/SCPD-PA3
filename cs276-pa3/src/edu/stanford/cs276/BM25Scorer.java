@@ -41,25 +41,25 @@ public class BM25Scorer extends AScorer
 	}
 	
 	///////////////weights///////////////////////////
-    double urlweight = 0;
-    double titleweight  = 0;
-    double bodyweight = 0;
-    double headerweight = 2;
-    double anchorweight = 1;
+    double urlweight = 10;
+    double titleweight  = 2;
+    double bodyweight = 1;
+    double headerweight = 8;
+    double anchorweight = 7;
     double[] fieldsweight = {urlweight,titleweight,bodyweight,headerweight,anchorweight};
     
     ///////bm25 specific weights///////////////
   //String[] TFTYPES = {"url","title","body","header","anchor"};
-    double burl=0;
-    double btitle=0;
-    double bheader=1;
-    double bbody=0;
-    double banchor=0.75;
+    double burl=0.4;
+    double btitle=0.2;
+    double bheader=0.5;
+    double bbody=0.1;
+    double banchor=0.1;
     double[] bfields = {burl,btitle,bbody,bheader,banchor};
 
-    double k1=0.75;
-    double pageRankLambda=0.75;
-    double pageRankLambdaPrime=0.6;
+    double k1=50;
+    double pageRankLambda=1;
+    double pageRankLambdaPrime=1;
     //////////////////////////////////////////
     
     ////////////bm25 data structures--feel free to modify ////////
