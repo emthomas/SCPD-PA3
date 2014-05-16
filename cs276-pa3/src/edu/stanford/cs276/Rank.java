@@ -41,15 +41,16 @@ public class Rank
 		}else if (scoreType.equals("bm25")) {
 			scorer = new BM25Scorer(idfs,queryDict);
 			//added for testing
-			if(arguments.length==15) {
+			if(arguments.length==16) {
 				((BM25Scorer) scorer).setParameters(arguments);
 			}
 		}else if (scoreType.equals("window")) {
 			//feel free to change this to match your cosine scorer if you choose to build on top of that instead
 			scorer = new SmallestWindowScorer(idfs,queryDict);
-			if(arguments.length==15) {
-				((BM25Scorer) scorer).setParameters(arguments);
+			if(arguments.length==16) {
+				((SmallestWindowScorer) scorer).setParameters(arguments);
 			}
+
 		}else if (scoreType.equals("extra")){
 			scorer = new ExtraCreditScorer(idfs, corpusCount);
 		}
@@ -116,10 +117,10 @@ public class Rank
 	{
 		try {
 			File file = new File(outputFilePath);
- 
 			// if file doesnt exists, then create it
-			if (!file.exists()) 
+			if (!file.exists()) { 
 				file.createNewFile();
+			}
 			
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
@@ -160,13 +161,7 @@ public class Rank
 		Map<String,Double> idfs = null;
 
 		int corpusCount = 0;
-		//String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/data/";
-		//String dataDir = args[15];
-		//String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/data/";
-		//String dataDir = "/Users/ethomas35/SCPD/thome127/cs276-pa1/toy_example/data";
-		
 		String dataDir = "./corpus/data/";
-		//String dataDir = "./corpus/toy/";
 
 		String idfFilePath = ".";
 		String idfFileName = "idfFile.txt";
@@ -239,7 +234,7 @@ public class Rank
 		
 		//print results and save them to file 
 		//String outputFilePath =  "/Users/ethomas35/SCPD/PA3/SCPD-PA3/cs276-pa3/src/edu/stanford/cs276/ranked.txt";
-		String outputFilePath = "/Users/gupsumit/dev/Stanford/cs276/pa/pa3/SCPD-PA3/cs276-pa3/src/edu/stanford/cs276/ranked.txt";
+		String outputFilePath = "./ranked.txt";
 		writeRankedResultsToFile(queryRankings,outputFilePath);
 		
 		//print results

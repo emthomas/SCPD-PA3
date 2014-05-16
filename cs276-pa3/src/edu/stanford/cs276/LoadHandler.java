@@ -156,7 +156,10 @@ public class LoadHandler
 		
 		/* For each block */
 		for (File block : dirlist) {
-			
+			if (".".equals(block.getName()) || "..".equals(block.getName()) || block.getName().contains(".DS_Store")) {
+				continue; // Ignore the self and parent aliases.
+			}
+			//System.out.println(block.getName());
 			File blockDir = new File(root, block.getName());
 			File[] filelist = blockDir.listFiles();
 			
